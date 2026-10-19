@@ -2,8 +2,9 @@ class CartPage {
   constructor(page) {
     this.page = page;
     this.checkoutButton = page.locator('[data-test="checkout"]');
-    this.cartItemNames = page.locator('[data-test="inventory-item-name"]');
-    this.cartItemPrices = page.locator('[data-test="inventory-item-price"]');
+    this.cartItems = page.locator('.cart_item');
+    this.cartItemNames = this.cartItems.locator('[data-test="inventory-item-name"]');
+    this.cartItemPrices = this.cartItems.locator('[data-test="inventory-item-price"]');
     this.cartItemPrice = this.cartItemPrices;
   }
 
@@ -11,11 +12,17 @@ class CartPage {
     await this.checkoutButton.click();
   }
 
+  getRemoveButton(productName) {
+    const formattedName = productName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+
+    return this.page.locator(`[data-test="remove-${formattedName}"]`);
+  }
+
   async removeFromCart(productName) {
-    const lowerName = productName.toLowerCase();
-    const formattedName = lowerName.replace(/ /g, '-');
-    const selector = `[data-test="remove-${formattedName}"]`;
-    await this.page.locator(selector).click();
+    await this.getRemoveButton(productName).click();
   }
 }
 
