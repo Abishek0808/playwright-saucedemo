@@ -21,8 +21,8 @@ test.beforeEach(async ({ page }) => {
   checkoutOverviewPage = new CheckoutOverviewPage(page);
   checkoutCompletePage = new CheckoutCompletePage(page);
 
-  await page.goto('https://www.saucedemo.com/');
-  await loginPage.login('standard_user', 'secret_sauce');
+  await page.goto('/');
+  await loginPage.login(process.env.STANDARD_USER, process.env.PASSWORD);
 });
 
 test('user can complete checkout', async () => {

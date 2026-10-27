@@ -11,10 +11,9 @@ test.beforeEach(async ({ page }) => {
   loginPage = new LoginPage(page);
   inventoryPage = new InventoryPage(page);
   cartPage = new CartPage(page);
-  await page.goto('https://www.saucedemo.com/');
-  await loginPage.login('standard_user', 'secret_sauce');
-});
-test('cart shows the added product', async () => {
+  await page.goto('/');
+  await loginPage.login(process.env.STANDARD_USER, process.env.PASSWORD);
+});test('cart shows the added product', async () => {
   await inventoryPage.addToCart('Sauce Labs Backpack');
   await inventoryPage.shoppingCartLink.click();
   await expect(cartPage.cartItemNames).toHaveText('Sauce Labs Backpack');

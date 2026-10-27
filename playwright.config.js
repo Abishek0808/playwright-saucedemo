@@ -1,5 +1,11 @@
+require('dotenv').config();
+
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+
+if (!process.env.BASE_URL || !process.env.STANDARD_USER || !process.env.PASSWORD) {
+  throw new Error('BASE_URL, STANDARD_USER, and PASSWORD must be set in .env');
+}
 
 /**
  * Read environment variables from file.
@@ -27,7 +33,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: process.env.BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

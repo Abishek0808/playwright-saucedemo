@@ -4,23 +4,48 @@ let loginPage;
 
 test.beforeEach(async ({ page }) => {
   loginPage = new LoginPage(page);
-  await page.goto('https://www.saucedemo.com/');
+  await page.goto('/');
 });
 
 test('Valid user can log in', async ({page}) => {
-    await loginPage.login('standard_user', 'secret_sauce');
-    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await loginPage.login(process.env.STANDARD_USER, process.env.PASSWORD);
+    await expect(page).toHaveURL(new URL('/inventory.html', process.env.BASE_URL).toString());
 });
 const invalidLogins = [
-  { username: 'Invalid_user', password: 'secret_sauce', errorexpected:'Epic sadface: Username and password do not match any user in this service' },
-  { username: 'standard_user', password: 'Invalid_password',errorexpected:'Epic sadface: Username and password do not match any user in this service'  },
-  { username: 'test_user', password: 'Invalid_password', errorexpected:'Epic sadface: Username and password do not match any user in this service'  },
-  {username: '', password:'secret_sauce', errorexpected:'Epic sadface: Username is required'},
-  {username: 'standard_user', password:'', errorexpected:'Epic sadface: Password is required'}
+  {
+    name: 'unknown username',
+    username: 'Invalid_user',
+    password: process.env.PASSWORD,
+    errorexpected: 'Epic sadface: Username and password do not match any user in this service',
+  },
+  {
+    name: 'incorrect password',
+    username: process.env.STANDARD_USER,
+    password: 'Invalid_password',
+    errorexpected: 'Epic sadface: Username and password do not match any user in this service',
+  },
+  {
+    name: 'unknown username and password',
+    username: 'test_user',
+    password: 'Invalid_password',
+    errorexpected: 'Epic sadface: Username and password do not match any user in this service',
+  },
+  {
+    name: 'empty username',
+    username: '',
+    password: process.env.PASSWORD,
+    errorexpected: 'Epic sadface: Username is required',
+  },
+  {
+    name: 'empty password',
+    username: process.env.STANDARD_USER,
+    password: '',
+    errorexpected: 'Epic sadface: Password is required',
+  },
 ];
 
-invalidLogins.forEach(({ username, password ,errorexpected}) => {
-  test(`Invalid login: ${username} / ${password}`, async () => {
+invalidLogins.forEach(({ name, username, password, errorexpected }) => {
+  test(`Invalid login: ${name}`, async () => {
     await loginPage.login(username, password);
     await expect(loginPage.errorMessage).toContainText(errorexpected);
   });
