@@ -1,10 +1,10 @@
 const { test, expect } = require('@playwright/test');
-const LoginPage = require('../pages/login.page');
-const InventoryPage = require('../pages/inventory.page');
-const CartPage = require('../pages/cart.page');
-const CheckoutInfoPage = require('../pages/checkout-info.page');
-const CheckoutOverviewPage = require('../pages/checkout-overview.page');
-const CheckoutCompletePage = require('../pages/checkout-complete.page');
+const LoginPage = require('../../pages/login.page');
+const InventoryPage = require('../../pages/inventory.page');
+const CartPage = require('../../pages/cart.page');
+const CheckoutInfoPage = require('../../pages/checkout-info.page');
+const CheckoutOverviewPage = require('../../pages/checkout-overview.page');
+const CheckoutCompletePage = require('../../pages/checkout-complete.page');
 
 let loginPage;
 let inventoryPage;

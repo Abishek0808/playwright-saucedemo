@@ -1,4 +1,4 @@
-const LoginPage = require('../pages/login.page.js');
+const LoginPage = require('../../pages/login.page.js');
 const {test, expect} = require('@playwright/test');
 let loginPage;
 
